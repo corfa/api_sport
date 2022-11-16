@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from db.model.all_model import Employees
 
 
-def create_employe(session: Session, name: str, phone_number: str, department_id: int, date_born: str) -> Employees:
-    new_employe = Employees(
+def create_employ(session: Session, name: str, phone_number: str, department_id: int, date_born: str) -> Employees:
+    new_employ = Employees(
 
         full_name=name,
         phone_number=phone_number,
@@ -13,9 +13,13 @@ def create_employe(session: Session, name: str, phone_number: str, department_id
 
     )
 
-    session.add(new_employe)
+    session.add(new_employ)
     session.commit()
-    return new_employe
+    return new_employ
+
+
+def get_employee_id_by_name(session: Session, name: str) -> int:
+    return session.query(Employees.id).filter(Employees.full_name == name).first()
 
 
 def get_all_employees_on_id_deportament(session: Session, id: int):

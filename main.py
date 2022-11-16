@@ -5,6 +5,7 @@ from db.database import DataBase
 from sqlalchemy import create_engine
 
 from db.model.all_model import Base
+from db.queries.aboniment_q import change_status_aboniment
 from db.queries.employees_q import get_all_employees_on_id_deportament
 from db.queries.responsibles_q import verification_of_the_responsible
 
@@ -19,7 +20,7 @@ db = DataBase(engine)
 session = db.make_session()
 
 
-# #Base.metadata.drop_all(engine)
+# Base.metadata.drop_all(engine)
 # Base.metadata.create_all(engine)
 @app.get("/get_all_employees")
 async def get_all_employees():
@@ -36,3 +37,10 @@ async def read_item(name_responsible: str):
 async def read_item(id_deportament: int):
     res = get_all_employees_on_id_deportament(session, int(id_deportament))
     return {"result": res}
+
+
+@app.get("/change_status_aboniment/")
+async def read_item(id_employ: int):
+    res = change_status_aboniment(session, id_employ)
+    return {"result": res}
+# uvicorn main:app --reload
