@@ -21,7 +21,7 @@ session = db.make_session()
 
 
 #Base.metadata.drop_all(engine)
-Base.metadata.create_all(engine)
+#Base.metadata.create_all(engine)
 @app.get("/get_all_employees")
 async def get_all_employees():
     pass
