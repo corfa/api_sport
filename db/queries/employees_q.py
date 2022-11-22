@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.model.all_model import Employees, Abonnements
 
 
-def create_employ(session: Session, name: str, phone_number: str, department_id: int, date_born: str) -> Employees:
+def create_employ(session: Session, name: str, phone_number: str, department_id: int, date_born: str) -> int:
     new_employ = Employees(
 
         full_name=name,
@@ -15,7 +15,7 @@ def create_employ(session: Session, name: str, phone_number: str, department_id:
 
     session.add(new_employ)
     session.commit()
-    return new_employ
+    return new_employ.id
 
 
 def get_employee_id_by_name(session: Session, name: str) -> int:
