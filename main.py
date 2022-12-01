@@ -7,7 +7,8 @@ from fastapi.responses import JSONResponse
 from db.model.all_model import Base
 from db.queries.aboniment_q import change_status_aboniment, create_aboniment
 from db.queries.deportament_q import get_deportamet_id
-from db.queries.employees_q import get_all_employees_on_id_deportament, create_employ
+from db.queries.employees_q import get_all_employees_on_id_deportament, create_employ, get_data_employee_on_id, \
+    delete_employee_on_id, change_employee
 from db.queries.responsibles_q import verification_of_the_responsible
 
 app = FastAPI()
@@ -24,15 +25,47 @@ session = db.make_session()
 # Base.metadata.drop_all(engine)
 # Base.metadata.create_all(engine)
 
-@app.post("/create_employ")
-async def read_item(full_name: str, phone_number: str, department_name: str, date_born):
+@app.post("/create_employee/")
+async def read_item(full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool = True):
     try:
         employ_id = create_employ(session, name=full_name, phone_number=phone_number,
-                                  department_id=get_deportamet_id(session, department_name), date_born=date_born)
+                                  department_id=get_deportamet_id(session, department_name), date_born=date_born,
+                                  is_employee=is_employee)
 
         create_aboniment(session, employ_id=employ_id)
 
         return JSONResponse(content={"id": employ_id}, status_code=200)
+    except:
+        return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+
+
+@app.post("/change_employee/")
+async def read_item(id: int, full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool):
+    try:
+        employee_id = change_employee(session, id, full_name=full_name, phone_number=phone_number, date_born=date_born,
+                                      is_employee=is_employee, department_name=department_name)
+        return {"result": employee_id}
+
+    except:
+        return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+
+
+@app.get("/delete_employee/")
+async def read_item(id: int):
+    try:
+        employee_id = delete_employee_on_id(session, id)
+        return {"result": employee_id}
+
+    except:
+        return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+
+
+@app.get("/get_employee/")
+async def read_item(id: int):
+    try:
+        employee_data = get_data_employee_on_id(session, id)
+        return {"result": employee_data}
+
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 

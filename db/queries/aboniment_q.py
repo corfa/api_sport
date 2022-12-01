@@ -27,3 +27,7 @@ def change_status_aboniment(session: Session, employ_id: int):
     session.add(aboniment)
     session.commit()
     return aboniment.activ
+
+
+def get_aboniment_on_id_employee(session: Session, employ_id: int):
+    return session.query(Abonnements).filter(Abonnements.employees_id == employ_id).first()
