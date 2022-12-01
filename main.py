@@ -39,7 +39,7 @@ async def read_item(full_name: str, phone_number: str, department_name: str, dat
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-@app.post("/change_employee/")
+@app.patch("/change_employee/")
 async def read_item(id: int, full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool):
     try:
         employee_id = change_employee(session, id, full_name=full_name, phone_number=phone_number, date_born=date_born,
@@ -50,7 +50,7 @@ async def read_item(id: int, full_name: str, phone_number: str, department_name:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-@app.get("/delete_employee/")
+@app.delete("/delete_employee/")
 async def read_item(id: int):
     try:
         employee_id = delete_employee_on_id(session, id)
