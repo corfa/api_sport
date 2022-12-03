@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from db.model.all_model import Employees, Abonnements
 from db.queries.aboniment_q import get_aboniment_on_id_employee
-from db.queries.deportament_q import get_deportamet_id
+from db.queries.departament_q import get_departamet_id
 
 
 def create_employ(session: Session, name: str, phone_number: str, department_id: int, date_born: str,
@@ -30,7 +30,7 @@ def get_data_employee_on_id(session: Session, id: int) -> Employees:
     return session.query(Employees).filter(Employees.id == id).first()
 
 
-def get_all_employees_on_id_deportament(session: Session, id: int):
+def get_all_employees_on_id_departament(session: Session, id: int):
     result = []
     employees = session.query(Employees).filter(Employees.department_id == id).all()
     for i in employees:
@@ -56,6 +56,6 @@ def change_employee(session: Session, id: int, full_name: str, phone_number: str
     employee.phone_number = phone_number
     employee.date_born = date_born
     employee.is_employee = is_employee
-    employee.department_id = get_deportamet_id(session, department_name)
+    employee.department_id = get_departamet_id(session, department_name)
     session.commit()
     return employee.id

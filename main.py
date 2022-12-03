@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from starlette.responses import FileResponse
 
 from config.config_app import ConfigApp
 from db.database import DataBase
@@ -6,9 +7,10 @@ from sqlalchemy import create_engine
 from fastapi.responses import JSONResponse
 from db.model.all_model import Base
 from db.queries.aboniment_q import change_status_aboniment, create_aboniment
-from db.queries.deportament_q import get_deportamet_id
-from db.queries.employees_q import get_all_employees_on_id_deportament, create_employ, get_data_employee_on_id, \
+from db.queries.departament_q import get_departamet_id
+from db.queries.employees_q import get_all_employees_on_id_departament, create_employ, get_data_employee_on_id, \
     delete_employee_on_id, change_employee
+from db.queries.report_q import get_data_for_report_in_file
 from db.queries.responsibles_q import verification_of_the_responsible
 
 app = FastAPI()
@@ -29,7 +31,7 @@ session = db.make_session()
 async def read_item(full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool = True):
     try:
         employ_id = create_employ(session, name=full_name, phone_number=phone_number,
-                                  department_id=get_deportamet_id(session, department_name), date_born=date_born,
+                                  department_id=get_departamet_id(session, department_name), date_born=date_born,
                                   is_employee=is_employee)
 
         create_aboniment(session, employ_id=employ_id)
@@ -68,7 +70,13 @@ async def read_item(id: int):
 
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
-
+@app.get("/get_report")
+async def root():
+    try:
+        get_data_for_report_in_file(session)
+        return FileResponse("report/отчёт.xlsx", filename="отчёт.xlsx", )
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 @app.get("/verification/")
 async def read_item(name_responsible: str):
@@ -80,10 +88,10 @@ async def read_item(name_responsible: str):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-@app.get("/get_all_employees_on_id_deportament/")
+@app.get("/get_all_employees_on_id_departament/")
 async def read_item(id_deportament: int):
     try:
-        all_employees = get_all_employees_on_id_deportament(session, int(id_deportament))
+        all_employees = get_all_employees_on_id_departament(session, int(id_deportament))
         return {"result": all_employees}
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)

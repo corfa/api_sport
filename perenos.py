@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from config.config_app import ConfigApp
 from db.database import DataBase
 from db.queries.aboniment_q import create_aboniment
-from db.queries.deportament_q import create_deportament, get_deportamet_id, get_all_deportament
+from db.queries.departament_q import create_departament, get_departamet_id, get_all_deprtament
 from db.queries.employees_q import create_employ, get_employee_id_by_name
 from db.queries.responsibles_q import create_responsible
 
@@ -29,7 +29,7 @@ for i in all_results:
     mass_dep.add(i[0])
 
 for i in mass_dep:
-    create_deportament(session,i)
+    create_departament(session, i)
 
 
 
@@ -43,7 +43,7 @@ for i in all:
     mass.add(i)
 
 for i in mass:
-    id_ = get_deportamet_id(session,i[1])[0]
+    id_ = get_departamet_id(session, i[1])[0]
     create_responsible(session,i[0],id_)
 
 
@@ -53,7 +53,7 @@ for i in mass:
 cur.execute("SELECT ФИО,Номер_телефона,Дата_рождения ,Отдел FROM october_activ")
 w=cur.fetchall()
 for i in w:
-    id_=get_deportamet_id(session,i[3])[0]
+    id_= get_departamet_id(session, i[3])[0]
     create_employ(session,name=i[0],phone_number=i[1],department_id=id_,date_born=i[2])
 
 cur.execute("SELECT ФИО,Абонемент_действует_с,cost FROM october_activ")
