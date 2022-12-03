@@ -70,13 +70,16 @@ async def read_item(id: int):
 
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+
+
 @app.get("/get_report")
-async def root():
+async def report():
     try:
         get_data_for_report_in_file(session)
         return FileResponse("report/отчёт.xlsx", filename="отчёт.xlsx", )
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
 
 @app.get("/verification/")
 async def read_item(name_responsible: str):
