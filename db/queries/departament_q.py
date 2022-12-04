@@ -26,5 +26,5 @@ def get_departamet_name_on_id(session: Session, id: int) -> str:
 
 
 
-def get_all_deprtament(session: Session):
-    return session.query(Departments.departament_name).all()
+def get_all_departament(session: Session):
+    return session.query(Departments.id,Departments.departament_name).all()
