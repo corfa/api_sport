@@ -28,10 +28,10 @@ session = db.make_session()
 # Base.metadata.create_all(engine)
 
 @app.post("/create_employee/")
-async def read_item(full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool = True):
+async def read_item(full_name: str, phone_number: str, department_id: int, date_born, is_employee: bool = True):
     try:
         employ_id = create_employ(session, name=full_name, phone_number=phone_number,
-                                  department_id=get_departamet_id(session, department_name), date_born=date_born,
+                                  department_id=department_id, date_born=date_born,
                                   is_employee=is_employee)
 
         create_aboniment(session, employ_id=employ_id)
@@ -42,10 +42,10 @@ async def read_item(full_name: str, phone_number: str, department_name: str, dat
 
 
 @app.patch("/change_employee/")
-async def read_item(id: int, full_name: str, phone_number: str, department_name: str, date_born, is_employee: bool):
+async def read_item(id: int, full_name: str, phone_number: str, department_id: int, date_born, is_employee: bool):
     try:
         employee_id = change_employee(session, id, full_name=full_name, phone_number=phone_number, date_born=date_born,
-                                      is_employee=is_employee, department_name=department_name)
+                                      is_employee=is_employee, department_id=department_id)
         return {"result": employee_id}
 
     except:

@@ -49,13 +49,13 @@ def delete_employee_on_id(session: Session, id: int):
     return employee.id
 
 
-def change_employee(session: Session, id: int, full_name: str, phone_number: str, department_name: str, date_born: str,
+def change_employee(session: Session, id: int, full_name: str, phone_number: str, department_id: int, date_born: str,
                     is_employee: bool):
     employee = session.query(Employees).filter(Employees.id == id).first()
     employee.full_name = full_name
     employee.phone_number = phone_number
     employee.date_born = date_born
     employee.is_employee = is_employee
-    employee.department_id = get_departamet_id(session, department_name)
+    employee.department_id = department_id
     session.commit()
     return employee.id
