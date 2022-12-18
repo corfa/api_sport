@@ -28,13 +28,17 @@ session = db.make_session()
 # Base.metadata.create_all(engine)
 
 @app.post("/create_employee/")
-async def read_item(full_name: str, phone_number: str, department_id: int, date_born, is_employee: bool = True):
+async def read_item(full_name: str, phone_number: str, department_id: int, date_born, date_start_aboniment: str,
+                    is_employee: bool = True, ):
     try:
         employ_id = create_employ(session, name=full_name, phone_number=phone_number,
                                   department_id=department_id, date_born=date_born,
                                   is_employee=is_employee)
-
-        create_aboniment(session, employ_id=employ_id)
+        if is_employee is True:
+            cost = 900
+        else:
+            cost = 1400
+        create_aboniment(session, date_create=date_start_aboniment, employ_id=employ_id, cost=cost)
 
         return JSONResponse(content={"id": employ_id}, status_code=200)
     except:
@@ -107,6 +111,7 @@ async def read_item(id_employ: int):
         return {"result": status}
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+
 
 @app.get("/get_all_departament")
 async def report():

@@ -35,7 +35,7 @@ def get_all_employees_on_id_departament(session: Session, id: int):
     employees = session.query(Employees).filter(Employees.department_id == id).all()
     for i in employees:
         result.append(
-            {"full_name": i.full_name, "id": i.id, "department_id": i.department_id, "phone_number": i.phone_number,
+            {"full_name": i.full_name, "id": i.id, "department_id": i.department_id, "phone_number": i.phone_number, "is_employee":i.is_employee,
              "abonnement_status": session.query(Abonnements).filter(Abonnements.employees_id == i.id).first().activ})
 
     return result

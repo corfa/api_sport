@@ -3,7 +3,7 @@ from datetime import datetime
 from db.model.all_model import Abonnements
 
 
-def create_aboniment(session: Session, date_create: str = str(datetime.now().time()), cost: int = 0,
+def create_aboniment(session: Session, date_create:str, cost:int,
                      employ_id: int = None) -> Abonnements:
     new_aboniment = Abonnements(
         date_create=date_create,
