@@ -10,7 +10,9 @@ from db.queries.aboniment_q import change_status_aboniment, create_aboniment
 from db.queries.departament_q import get_departamet_id, get_all_departament
 from db.queries.employees_q import get_all_employees_on_id_departament, create_employ, get_data_employee_on_id, \
     delete_employee_on_id, change_employee
-from db.queries.report_q import get_data_for_report_in_file
+from db.queries.report_q import get_data_for_report_activ_abonnement_in_file, \
+    get_data_for_report_noactiv_abonnement_in_file, get_data_for_report_noactiv_abonnement_on_departamet_in_file, \
+    get_data_for_report_activ_abonnement_on_departamet_in_file
 from db.queries.responsibles_q import verification_of_the_responsible
 
 app = FastAPI()
@@ -76,14 +78,38 @@ async def read_item(id: int):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-@app.get("/get_report")
+
+
+@app.get("/get_report_activ_aboniment")
 async def report():
     try:
-        get_data_for_report_in_file(session)
-        return FileResponse("report/отчёт.xlsx", filename="отчёт.xlsx", )
+        get_data_for_report_activ_abonnement_in_file(session)
+        return FileResponse("report/отчёт по активным admin.xlsx", filename="отчёт по активным.xlsx", )
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
+@app.get("/get_report_noactiv_aboniment")
+async def report():
+    try:
+        get_data_for_report_noactiv_abonnement_in_file(session)
+        return FileResponse("report/отчёт по неактивным admin.xlsx", filename="отчёт по неактивным.xlsx", )
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
+@app.get("/get_report_noactiv_aboniment_in_departament")
+async def read_item(id_departament: int):
+    try:
+        get_data_for_report_noactiv_abonnement_on_departamet_in_file(session, id_departament)
+        return FileResponse("report/отчёт по неактивным responsible.xlsx", filename="отчёт по неактивным.xlsx", )
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
+@app.get("/get_report_activ_aboniment_in_departament")
+async def read_item(id_departament: int):
+    try:
+        get_data_for_report_activ_abonnement_on_departamet_in_file(session,id_departament)
+        return FileResponse("report/отчёт по активным responsible.xlsx", filename="отчёт по активным.xlsx", )
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 @app.get("/verification/")
 async def read_item(name_responsible: str):
