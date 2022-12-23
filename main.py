@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from db.model.all_model import Base
 from db.queries.aboniment_q import change_status_aboniment, create_aboniment
 from db.queries.departament_q import get_departamet_id, get_all_departament
-from db.queries.employees_q import get_all_employees_on_id_departament, create_employ, get_data_employee_on_id, \
+from db.queries.employees_q import get_all_employees_on_id_departaments, create_employ, get_data_employee_on_id, \
     delete_employee_on_id, change_employee
 from db.queries.report_q import get_data_for_report_activ_abonnement_in_file, \
     get_data_for_report_noactiv_abonnement_in_file, get_data_for_report_noactiv_abonnement_on_departamet_in_file, \
@@ -78,8 +78,6 @@ async def read_item(id: int):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-
-
 @app.get("/get_report_activ_aboniment")
 async def report():
     try:
@@ -87,6 +85,8 @@ async def report():
         return FileResponse("report/отчёт по активным admin.xlsx", filename="отчёт по активным.xlsx", )
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
+
 @app.get("/get_report_noactiv_aboniment")
 async def report():
     try:
@@ -95,21 +95,26 @@ async def report():
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
+
 @app.get("/get_report_noactiv_aboniment_in_departament")
-async def read_item(id_departament: int):
+async def read_item(id_departaments: str):
     try:
-        get_data_for_report_noactiv_abonnement_on_departamet_in_file(session, id_departament)
+        list_id = [int(i) for i in id_departaments.split(",")]
+        get_data_for_report_noactiv_abonnement_on_departamet_in_file(session, list_id)
         return FileResponse("report/отчёт по неактивным responsible.xlsx", filename="отчёт по неактивным.xlsx", )
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
+
 @app.get("/get_report_activ_aboniment_in_departament")
-async def read_item(id_departament: int):
+async def read_item(id_departaments: str):
     try:
-        get_data_for_report_activ_abonnement_on_departamet_in_file(session,id_departament)
+        list_id = [int(i) for i in id_departaments.split(",")]
+        get_data_for_report_activ_abonnement_on_departamet_in_file(session, list_id)
         return FileResponse("report/отчёт по активным responsible.xlsx", filename="отчёт по активным.xlsx", )
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
 
 @app.get("/verification/")
 async def read_item(name_responsible: str):
@@ -119,12 +124,14 @@ async def read_item(name_responsible: str):
 
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
+#34,78,23,46,19,83,55,76,71,10
 
-
-@app.get("/get_all_employees_on_id_departament/")
-async def read_item(id_departament: int):
+# change
+@app.get("/get_all_employees_on_id_departaments/")
+async def read_item(id_departaments: str):
     try:
-        all_employees = get_all_employees_on_id_departament(session, int(id_departament))
+        list_id = [int(i) for i in id_departaments.split(",")]
+        all_employees = get_all_employees_on_id_departaments(session, list_id)
         return {"result": all_employees}
     except:
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)

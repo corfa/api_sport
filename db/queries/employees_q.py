@@ -30,15 +30,23 @@ def get_data_employee_on_id(session: Session, id: int) -> Employees:
     return session.query(Employees).filter(Employees.id == id).first()
 
 
-def get_all_employees_on_id_departament(session: Session, id: int):
+def get_all_employees_on_id_departaments(session: Session, id: list[int]):
     result = []
-    employees = session.query(Employees).filter(Employees.department_id == id).all()
-    for i in employees:
-        result.append(
-            {"full_name": i.full_name, "id": i.id, "department_id": i.department_id, "phone_number": i.phone_number, "is_employee":i.is_employee,
-             "abonnement_status": session.query(Abonnements).filter(Abonnements.employees_id == i.id).first().activ})
+    for j in id:
+        employees = session.query(Employees).filter(Employees.department_id == j).all()
+        for i in employees:
+            result.append(
+                {"full_name": i.full_name, "id": i.id, "department_id": i.department_id, "phone_number": i.phone_number,
+                 "is_employee": i.is_employee,
+                 "abonnement_status": session.query(Abonnements).filter(
+                     Abonnements.employees_id == i.id).first().activ})
 
     return result
+
+
+def get_id_employee_on_phone_number(session: Session, phone: str):
+    employee = session.query(Employees).filter(Employees.phone_number == phone).first()
+    return employee.id
 
 
 def delete_employee_on_id(session: Session, id: int):
@@ -52,10 +60,11 @@ def delete_employee_on_id(session: Session, id: int):
 def change_employee(session: Session, id: int, full_name: str, phone_number: str, department_id: int, date_born: str,
                     is_employee: bool):
     employee = session.query(Employees).filter(Employees.id == id).first()
-    employee.full_name = full_name
+    employee.last_name = full_name
     employee.phone_number = phone_number
     employee.date_born = date_born
     employee.is_employee = is_employee
     employee.department_id = department_id
     session.commit()
     return employee.id
+

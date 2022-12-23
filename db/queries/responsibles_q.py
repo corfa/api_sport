@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from db.model.all_model import Responsibles
 
 
-def create_responsible(session: Session, name: str, deportament_id: int) -> Responsibles:
+def create_responsible(session: Session, name: str, deportament_id:list) -> Responsibles:
     new_responsible = Responsibles(
 
-        full_name=name,
+        last_name=name,
         responsible_for_the_department_id=deportament_id,
 
     )
@@ -17,5 +17,5 @@ def create_responsible(session: Session, name: str, deportament_id: int) -> Resp
 
 
 def verification_of_the_responsible(session: Session, name) -> Responsibles:
-    return session.query(Responsibles).filter(Responsibles.full_name == name).first()
+    return session.query(Responsibles).filter(Responsibles.last_name == name).first()
 

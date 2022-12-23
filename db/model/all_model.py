@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, TIMESTAMP, VARCHAR, ForeignKey, BOOLEAN
+from sqlalchemy import Column, Integer, TIMESTAMP, VARCHAR, ForeignKey, BOOLEAN, ARRAY
 
 Base = declarative_base()
 
@@ -61,7 +61,7 @@ class Abonnements(BaseModel):
 
 class Responsibles(BaseModel):
     __tablename__ = 'responsibles'
-    full_name = Column(VARCHAR(60), nullable=False)
+    last_name = Column(VARCHAR(60), nullable=False)
     # last_name = Column(VARCHAR(20), nullable=False)
     # second_name = Column(VARCHAR(30), nullable=False)
-    responsible_for_the_department_id = Column(Integer, ForeignKey('departments.id'))
+    responsible_for_the_department_id = Column(ARRAY(Integer))

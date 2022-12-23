@@ -16,7 +16,7 @@ def create_departament(session: Session, name: str) -> Departments:
 
 
 def get_departamet_id(session: Session, name: str) -> int:
-    return session.query(Departments.id, ).filter(Departments.departament_name == name).first()
+    return session.query(Departments ).filter(Departments.departament_name == name).first().id
 
 
 def get_departamet_name_on_id(session: Session, id: int) -> str:
