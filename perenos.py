@@ -8,19 +8,19 @@ from db.model.all_model import Abonnements
 from db.queries.aboniment_q import create_aboniment, change_status_aboniment
 from db.queries.departament_q import create_departament, get_departamet_id, get_all_departament
 from db.queries.employees_q import create_employ, get_employee_id_by_name
-from db.queries.responsibles_q import create_responsible
+from db.queries.responsibles_q import create_responsible, delete_responsible
 
 # conn = sqlite3.connect(r'sport.db')
 # cur = conn.cursor()
 #
-#
-# config = ConfigApp()
-#
-# engine = create_engine(
-#     config.url,
-# )
-# db=DataBase(engine)
-# session=db.make_session()
+
+config = ConfigApp()
+
+engine = create_engine(
+    config.url,
+)
+db=DataBase(engine)
+session=db.make_session()
 
 
 # cur.execute("SELECT Отдел FROM october_activ")
@@ -62,3 +62,4 @@ from db.queries.responsibles_q import create_responsible
 # for i in q:
 # #     create_aboniment(session,i[1],i[2],get_employee_id_by_name(session,i[0]))
 
+delete_responsible(session,33)

@@ -54,6 +54,7 @@ def delete_employee_on_id(session: Session, id: int):
     session.delete(aboniment)
     employee = session.query(Employees).filter(Employees.id == id).first()
     session.delete(employee)
+    session.commit()
     return employee.id
 
 
