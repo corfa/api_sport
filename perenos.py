@@ -6,7 +6,7 @@ from config.config_app import ConfigApp
 from db.database import DataBase
 from db.model.all_model import Abonnements
 from db.queries.aboniment_q import create_aboniment, change_status_aboniment
-from db.queries.departament_q import create_departament, get_departamet_id, get_all_departament
+from db.queries.departament_q import create_departament, get_departament_id, get_all_departament
 from db.queries.employees_q import create_employ, get_employee_id_by_name
 from db.queries.responsibles_q import create_responsible, delete_responsible
 

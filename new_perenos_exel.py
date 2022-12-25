@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from config.config_app import ConfigApp
 from db.database import DataBase
 from db.queries.aboniment_q import create_aboniment
-from db.queries.departament_q import create_departament, get_departamet_id
+from db.queries.departament_q import create_departament, get_departament_id
 from db.queries.employees_q import create_employ, get_employee_id_by_name, get_id_employee_on_phone_number
 from db.queries.responsibles_q import create_responsible
 
@@ -12,7 +12,7 @@ from db.queries.responsibles_q import create_responsible
 def sop(session, s: list):
     r = []
     for i in s:
-        r.append(get_departamet_id(session, i))
+        r.append(get_departament_id(session, i))
     return r
 
 
@@ -46,7 +46,7 @@ for i in dict_:
 
 for i in range(len(data["ФИО"])):
     is_em=True
-    id_ = get_departamet_id(session, data["Отдел"][i])
+    id_ = get_departament_id(session, data["Отдел"][i])
     if data["Списание "][i]==1400:
         is_em=False
     create_employ(session, name=data["ФИО"][i], phone_number=data["Номер телефона"][i], department_id=id_,

@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from fastapi.responses import JSONResponse
 from db.model.all_model import Base
 from db.queries.aboniment_q import change_status_aboniment, create_aboniment
-from db.queries.departament_q import get_departamet_id, get_all_departament
+from db.queries.departament_q import get_departament_id, get_all_departament
 from db.queries.employees_q import get_all_employees_on_id_departaments, create_employ, get_data_employee_on_id, \
     delete_employee_on_id, change_employee
 from db.queries.report_q import get_data_for_report_activ_abonnement_in_file, \
@@ -208,7 +208,15 @@ async def read_item(id_departaments: str):
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
+#DEPARTAMENT
+@app.get("/get_departament_id")
+async def read_item(departamet_name: str):
+    try:
+        departament_id=get_departament_id(session, departamet_name)
+        return {"result": departament_id}
 
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 
 

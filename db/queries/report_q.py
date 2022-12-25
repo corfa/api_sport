@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from db.model.all_model import Employees, Abonnements
 
-from db.queries.departament_q import get_departamet_id, get_departamet_name_on_id
+from db.queries.departament_q import get_departament_id, get_departamet_name_on_id
 
 
 def get_data_for_report_noactiv_abonnement_on_departamet_in_file(session: Session, id: list[id]):
