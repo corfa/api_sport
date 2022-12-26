@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 
 from db.model.all_model import Employees, Abonnements
 from db.queries.aboniment_q import get_aboniment_on_id_employee
-from db.queries.departament_q import get_departament_id
 
 
 def create_employ(session: Session, name: str, phone_number: str, department_id: int, date_born: str,

@@ -7,7 +7,8 @@ from sqlalchemy import create_engine
 from fastapi.responses import JSONResponse
 from db.model.all_model import Base
 from db.queries.aboniment_q import change_status_aboniment, create_aboniment
-from db.queries.departament_q import get_departament_id, get_all_departament
+from db.queries.departament_q import get_departament_id, get_all_departament, create_departament, change_departament, \
+    del_departament
 from db.queries.employees_q import get_all_employees_on_id_departaments, create_employ, get_data_employee_on_id, \
     delete_employee_on_id, change_employee
 from db.queries.report_q import get_data_for_report_activ_abonnement_in_file, \
@@ -15,8 +16,6 @@ from db.queries.report_q import get_data_for_report_activ_abonnement_in_file, \
     get_data_for_report_activ_abonnement_on_departamet_in_file
 from db.queries.responsibles_q import verification_of_the_responsible, create_responsible, delete_responsible, \
     change_responsible
-
-
 
 app = FastAPI()
 
@@ -29,15 +28,11 @@ db = DataBase(engine)
 session = db.make_session()
 
 
-
-
 # Base.metadata.drop_all(engine)
 # Base.metadata.create_all(engine)
 
 
-
-
-#EMPOYEE ENDPOINTS
+# EMPOYEE ENDPOINTS
 @app.post("/create_employee/")
 async def read_item(full_name: str, phone_number: str, department_id: int, date_born, date_start_aboniment: str,
                     is_employee: bool = True, ):
@@ -87,9 +82,6 @@ async def read_item(id: int):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-
-
-
 @app.get("/get_all_employees_on_id_departaments/")
 async def read_item(id_departaments: str):
     try:
@@ -100,8 +92,7 @@ async def read_item(id_departaments: str):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-
-#ABONIMENT ENDPOINT
+# ABONIMENT ENDPOINT
 @app.get("/change_status_aboniment/")
 async def read_item(id_employ: int):
     try:
@@ -111,20 +102,7 @@ async def read_item(id_employ: int):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-#DEPARTAMENT ENDPOINT
-@app.get("/get_all_departament")
-async def report():
-    try:
-        departament = get_all_departament(session)
-        return {"result": departament}
-
-    except:
-        return JSONResponse(content={"message": "something wrong"}, status_code=400)
-
-
-
-
-#RESPONSIBLE ENDPOINTS
+# RESPONSIBLE ENDPOINTS
 
 @app.get("/verification/")
 async def read_item(name_responsible: str):
@@ -166,11 +144,7 @@ async def read_item(id_responsible: int, last_name: str, id_departaments: str):
         return JSONResponse(content={"message": "Invalid data"}, status_code=400)
 
 
-
-
-
-
-#REPORT ENDPOINTS
+# REPORT ENDPOINTS
 @app.get("/get_report_activ_aboniment")
 async def report():
     try:
@@ -208,18 +182,55 @@ async def read_item(id_departaments: str):
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
-#DEPARTAMENT
+
+# DEPARTAMENT ENDPOINT
+@app.get("/get_all_departament")
+async def report():
+    try:
+        departament = get_all_departament(session)
+        return {"result": departament}
+
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
+
 @app.get("/get_departament_id")
 async def read_item(departamet_name: str):
     try:
-        departament_id=get_departament_id(session, departamet_name)
+        departament_id = get_departament_id(session, departamet_name)
         return {"result": departament_id}
 
     except:
         return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 
+@app.get("/create_departament")
+async def read_item(departament_name: str):
+    try:
+        departament_id = create_departament(session, departament_name)
+        return {"result": departament_id}
+
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 
+@app.patch("/change_departament")
+async def read_item(departament_id: int, departament_name: str):
+    try:
+        departament_id = change_departament(session, departament_id, departament_name)
+        return {"result": departament_id}
+
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
+
+
+@app.delete("/delete_departament")
+async def read_item(departament_id: int):
+    try:
+        departament_id = del_departament(session, departament_id)
+        return {"result": departament_id}
+
+    except:
+        return JSONResponse(content={"message": "something wrong"}, status_code=400)
 
 # uvicorn main:app --reload
