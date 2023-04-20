@@ -63,3 +63,4 @@ session=db.make_session()
 # #     create_aboniment(session,i[1],i[2],get_employee_id_by_name(session,i[0]))
 
 delete_responsible(session,33)
+print("ВСЕ УДАЛИЛОСь!!!")
